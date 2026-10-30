@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+/* La caché del modo sin conexión no tiene clases: sin esto, cada respuesta guardada
+   hacía que Tailwind recompilara y el navegador recargara la página. */
+@source not "../../data";
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Marca ARCA: azul principal #153D63 */
+  --color-arca-50: #eef3f8;
+  --color-arca-100: #d7e3ef;
+  --color-arca-200: #adc4dc;
+  --color-arca-500: #2f6aa3;
+  --color-arca-600: #1f5285;
+  --color-arca-700: #153d63;
+  --color-arca-800: #0f2e4b;
+  --color-arca-900: #0a1f33;
+
+  /* Acento naranja para cifras y llamados a la acción.
+     #E8833A para rellenos; #B85A14 para texto y botones (contraste suficiente). */
+  --color-naranja-50: #fdf3eb;
+  --color-naranja-100: #fbe3cf;
+  --color-naranja-400: #e8833a;
+  --color-naranja-600: #b85a14;
+  --color-naranja-700: #96480f;
+
+  /* Estados: solo para rechazo o alerta, advertencia y éxito. */
+  --color-rechazo: #b42318;
+  --color-rechazo-fondo: #fef3f2;
+  --color-rechazo-borde: #fda29b;
+  --color-advertencia: #b54708;
+  --color-advertencia-fondo: #fffaeb;
+  --color-advertencia-borde: #fec84b;
+  --color-exito: #067647;
+  --color-exito-fondo: #ecfdf3;
+  --color-exito-borde: #75e0a7;
+}
+
+/* 17 px con el tamaño por defecto del navegador, pero relativo: respeta el tamaño de
+   letra que la persona elija en el navegador o el sistema (accessibility.md › Vision). */
+html {
+  font-size: 106.25%;
+}
+
+/* Contraste aumentado: grises de texto y bordes más oscuros. */
+@media (prefers-contrast: more) {
+  :root {
+    --color-gray-400: #4a5565;
+    --color-gray-500: #364153;
+    --color-gray-600: #1e2939;
+    --color-gray-200: #6a7282;
+    --color-gray-300: #4a5565;
+    --color-arca-100: #ffffff;
+    --color-arca-200: #153d63;
+  }
+}
+
+/* Movimiento reducido: sin animaciones ni transiciones; el texto que acompaña a cada
+   indicador ("Consultando Oracle…") sigue diciendo lo mismo. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background: #ffffff;
+  color: #1f2937;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-naranja-400);
+  outline-offset: 2px;
+}
+
+@keyframes progreso {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+.cifra {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}

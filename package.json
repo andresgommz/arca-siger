@@ -1,0 +1,42 @@
+{
+  "name": "arca-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ARCA Web: demostrador de la base de datos SIGER-Emergencias",
+  "scripts": {
+    "predev": "tsx scripts/generar-sql.ts",
+    "dev": "next dev",
+    "prebuild": "tsx scripts/generar-sql.ts",
+    "build": "next build",
+    "pretest": "tsx scripts/generar-sql.ts",
+    "start": "next start",
+    "test": "vitest run",
+    "smoke": "tsx scripts/smoke.ts",
+    "precargar": "tsx scripts/precargar.ts",
+    "generar-restablecer": "tsx scripts/generar-restablecer.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "lucide-react": "^1.64.0",
+    "next": "^15.5.28",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "recharts": "^3.10.1",
+    "swr": "^2.5.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "postcss": "^8.5.32",
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5"
+  }
+}
