@@ -185,6 +185,7 @@ Antes de empezar: **Coordinador > Restablecer demo**.
 | Un endpoint responde 500 | Error en el SQL del manejador. Pruébelo en **RESTful Services > Modules > arca > plantilla > GET > Test**. |
 | Operación con "Error de la base de datos" | Lea el texto ORA que se muestra debajo: es el error original de Oracle. |
 | Restablecer demo falla | Ejecute `BEGIN P_RESTABLECER_DEMO; END;` en SQL Commands para ver el error. Si se modificó `2_ARCA_DATOS.sql`, corra `npm run generar-restablecer` y vuelva a ejecutar el script 3. |
+| En Vercel el token falla con **HTTP 403 "Access Denied"** | El cortafuegos de oracleapex.com rechaza las llamadas que salen de los servidores de Vercel (probado el 29/10/2026 en las regiones `iad1` y `gru1`); desde un computador personal las mismas llamadas funcionan. No es un error de la app ni de las credenciales. Use la versión local, o publique un link que salga desde el portátil (ver la sección de despliegue). |
 | En Vercel todo dice "Sin conexión con Oracle" | Faltan variables de entorno o no se hizo Redeploy después de cargarlas. Corra `npm run smoke -- --url <link>`. |
 | En Vercel las operaciones responden 401 | La clave escrita no coincide con `DEMO_CLAVE`. El diálogo la vuelve a pedir; la clave se guarda solo en esa pestaña. |
 | El build de Vercel falla | Revise el log: el prebuild necesita que `db/ARCA_CONSULTA1.sql` a `ARCA_CONSULTA5.sql` estén en el repositorio. |
