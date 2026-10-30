@@ -1,0 +1,19 @@
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Variables de entorno con credenciales
+.env
+.env.local
+.env.*.local
+
+# Caché local del modo sin conexión
+data/cache/
+
+# Generado por el prebuild
+src/generated/
+
+.vercel
+npm-debug.log*
