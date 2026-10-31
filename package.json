@@ -13,6 +13,7 @@
     "test": "vitest run",
     "smoke": "tsx scripts/smoke.ts",
     "precargar": "tsx scripts/precargar.ts",
+    "compartir": "tsx scripts/compartir.ts",
     "generar-restablecer": "tsx scripts/generar-restablecer.ts",
     "typecheck": "tsc --noEmit"
   },

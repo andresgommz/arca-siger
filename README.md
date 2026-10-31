@@ -153,6 +153,37 @@ npm run smoke -- --url https://<proyecto>.vercel.app
 
 Si cambia una variable de entorno, haga **Redeploy** para que tome efecto.
 
+### Link público desde el portátil (la opción que funciona con apex.oracle.com)
+
+oracleapex.com rechaza las llamadas que salen de los servidores de Vercel (HTTP 403), así que la versión de Vercel no se puede conectar a Oracle. Para tener un link que se abra desde otro computador o celular, la app corre en el portátil y un túnel de Cloudflare la publica: las llamadas a Oracle salen del portátil, que Oracle sí acepta.
+
+1. Una sola vez, instale `cloudflared` (programa oficial de Cloudflare, gratis y sin cuenta):
+
+```bash
+winget install Cloudflare.cloudflared
+```
+
+2. Escriba una clave en `.env.local` (`DEMO_CLAVE=...`). Es obligatoria: con un link público, sin clave cualquiera podría modificar o restablecer la base. El comando no arranca si está vacía.
+3. Antes de la clase:
+
+```bash
+npm run compartir
+```
+
+Compila la app, la arranca en modo producción y abre el túnel. En la consola aparece el link, del tipo `https://palabras-al-azar.trycloudflare.com`. Compruébelo con:
+
+```bash
+npm run smoke -- --url https://palabras-al-azar.trycloudflare.com
+```
+
+Tenga en cuenta:
+
+- **El link cambia cada vez** que se ejecuta `npm run compartir`: compártalo el mismo día. Un link fijo requiere una cuenta de Cloudflare con dominio propio.
+- **El portátil debe seguir encendido**, con la ventana abierta y conectado a internet; desactive la suspensión durante la clase. `Ctrl+C` cierra la app y el túnel.
+- La primera operación desde el link pide la clave de demostración.
+
+Probado el 31/10/2026: smoke con 28 de 28 correctas a través del link (incluido el 401 sin clave).
+
 ## 5. Guion de demostración
 
 Antes de empezar: **Coordinador > Restablecer demo**.
@@ -185,7 +216,7 @@ Antes de empezar: **Coordinador > Restablecer demo**.
 | Un endpoint responde 500 | Error en el SQL del manejador. Pruébelo en **RESTful Services > Modules > arca > plantilla > GET > Test**. |
 | Operación con "Error de la base de datos" | Lea el texto ORA que se muestra debajo: es el error original de Oracle. |
 | Restablecer demo falla | Ejecute `BEGIN P_RESTABLECER_DEMO; END;` en SQL Commands para ver el error. Si se modificó `2_ARCA_DATOS.sql`, corra `npm run generar-restablecer` y vuelva a ejecutar el script 3. |
-| En Vercel el token falla con **HTTP 403 "Access Denied"** | El cortafuegos de oracleapex.com rechaza las llamadas que salen de los servidores de Vercel (probado el 29/10/2026 en las regiones `iad1` y `gru1`); desde un computador personal las mismas llamadas funcionan. No es un error de la app ni de las credenciales. Use la versión local, o publique un link que salga desde el portátil (ver la sección de despliegue). |
+| En Vercel el token falla con **HTTP 403 "Access Denied"** | El cortafuegos de oracleapex.com rechaza las llamadas que salen de los servidores de Vercel (probado el 29/10/2026 en las regiones `iad1` y `gru1`); desde un computador personal las mismas llamadas funcionan. No es un error de la app ni de las credenciales. Use la versión local, o publique un link desde el portátil con `npm run compartir` (sección "Link público desde el portátil"). |
 | En Vercel todo dice "Sin conexión con Oracle" | Faltan variables de entorno o no se hizo Redeploy después de cargarlas. Corra `npm run smoke -- --url <link>`. |
 | En Vercel las operaciones responden 401 | La clave escrita no coincide con `DEMO_CLAVE`. El diálogo la vuelve a pedir; la clave se guarda solo en esa pestaña. |
 | El build de Vercel falla | Revise el log: el prebuild necesita que `db/ARCA_CONSULTA1.sql` a `ARCA_CONSULTA5.sql` estén en el repositorio. |
