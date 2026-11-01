@@ -153,7 +153,39 @@ npm run smoke -- --url https://<proyecto>.vercel.app
 
 Si cambia una variable de entorno, haga **Redeploy** para que tome efecto.
 
-### Link público desde el portátil (la opción que funciona con apex.oracle.com)
+### Vercel con Oracle Cloud (Autonomous Database), sin depender del portátil
+
+oracleapex.com (el apex.oracle.com gratuito) rechaza las llamadas desde Vercel. Con una **Autonomous Database Always Free** en Oracle Cloud sí funciona: su ORDS queda en `https://<id>-<base>.adb.<región>.oraclecloudapps.com/ords/<alias>/`, sin ese cortafuegos.
+
+Configuración usada (01/11/2026): base `ARCA` en Bogotá (`sa-bogota-1`), workspace de APEX `ARCA`, esquema `WKSP_ARCA`, alias REST `arca_siger`.
+
+1. En Oracle Cloud: **Oracle Database › Autonomous Database › Create**, *Transaction Processing*, **Always Free**, acceso *Secure access from everywhere*.
+2. **Tool configuration › Oracle APEX**: entrar como ADMIN y crear el workspace con un esquema nuevo.
+3. En el workspace, **SQL Workshop › SQL Commands**: habilitar REST si `SELECT * FROM user_ords_schemas` no devuelve filas:
+
+```sql
+BEGIN
+  ORDS.ENABLE_SCHEMA(p_enabled => TRUE, p_url_mapping_type => 'BASE_PATH',
+                     p_url_mapping_pattern => 'arca_siger', p_auto_rest_auth => FALSE);
+  COMMIT;
+END;
+```
+
+4. **SQL Scripts**: ejecutar 1, 2, 3 y 4 (no el 0 en un esquema nuevo). Luego crear el cliente con el último bloque de `4_ARCA_API_REST.sql` en **SQL Commands**.
+5. En Vercel, con la **Full URL** del módulo `arca` (RESTful Services › Modules):
+
+```
+ORDS_BASE_URL=https://<id>-<base>.adb.<región>.oraclecloudapps.com/ords/arca_siger/arca/
+ORDS_OAUTH_TOKEN_URL=https://<id>-<base>.adb.<región>.oraclecloudapps.com/ords/arca_siger/oauth/token
+```
+
+más `ORDS_CLIENT_ID`, `ORDS_CLIENT_SECRET`, `DEMO_CLAVE`, `DEMO_TIMEZONE=America/Bogota` y `CACHE_LOCAL=false`; después **Redeploy**.
+
+Verificado: `npm run smoke -- --url https://arca-siger.vercel.app` con 28 de 28 correctas. Las funciones de Vercel corren en São Paulo (`vercel.json`), la región de Vercel más cercana a la base.
+
+**Antes de cada clase:** las bases Always Free se detienen solas después de 7 días sin uso. Entre a la consola de Oracle Cloud y confirme que la base esté *Available* (si no, **Start**); si queda detenida 90 días, Oracle la borra. Las bases de Oracle Cloud y de apex.oracle.com son independientes: restablecer una no cambia la otra.
+
+### Link público desde el portátil (respaldo con apex.oracle.com)
 
 oracleapex.com rechaza las llamadas que salen de los servidores de Vercel (HTTP 403), así que la versión de Vercel no se puede conectar a Oracle. Para tener un link que se abra desde otro computador o celular, la app corre en el portátil y un túnel de Cloudflare la publica: las llamadas a Oracle salen del portátil, que Oracle sí acepta.
 
@@ -216,7 +248,7 @@ Antes de empezar: **Coordinador > Restablecer demo**.
 | Un endpoint responde 500 | Error en el SQL del manejador. Pruébelo en **RESTful Services > Modules > arca > plantilla > GET > Test**. |
 | Operación con "Error de la base de datos" | Lea el texto ORA que se muestra debajo: es el error original de Oracle. |
 | Restablecer demo falla | Ejecute `BEGIN P_RESTABLECER_DEMO; END;` en SQL Commands para ver el error. Si se modificó `2_ARCA_DATOS.sql`, corra `npm run generar-restablecer` y vuelva a ejecutar el script 3. |
-| En Vercel el token falla con **HTTP 403 "Access Denied"** | El cortafuegos de oracleapex.com rechaza las llamadas que salen de los servidores de Vercel (probado el 29/10/2026 en las regiones `iad1` y `gru1`); desde un computador personal las mismas llamadas funcionan. No es un error de la app ni de las credenciales. Use la versión local, o publique un link desde el portátil con `npm run compartir` (sección "Link público desde el portátil"). |
+| En Vercel el token falla con **HTTP 403 "Access Denied"** | El cortafuegos de oracleapex.com rechaza las llamadas que salen de los servidores de Vercel (probado el 29/10/2026 en las regiones `iad1` y `gru1`); desde un computador personal las mismas llamadas funcionan. No es un error de la app ni de las credenciales. Use una Autonomous Database de Oracle Cloud (sección "Vercel con Oracle Cloud"), la versión local, o un link desde el portátil con `npm run compartir`. |
 | En Vercel todo dice "Sin conexión con Oracle" | Faltan variables de entorno o no se hizo Redeploy después de cargarlas. Corra `npm run smoke -- --url <link>`. |
 | En Vercel las operaciones responden 401 | La clave escrita no coincide con `DEMO_CLAVE`. El diálogo la vuelve a pedir; la clave se guarda solo en esa pestaña. |
 | El build de Vercel falla | Revise el log: el prebuild necesita que `db/ARCA_CONSULTA1.sql` a `ARCA_CONSULTA5.sql` estén en el repositorio. |
