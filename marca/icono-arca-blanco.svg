@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="ARCA">
+  <title>ARCA</title>
+  <g transform="translate(0 0) scale(1)">
+    <path d="M16 3 3 28h6l7-14 7 14h6L16 3Z" fill="#FFFFFF"/>
+    <circle cx="16" cy="24" r="3" fill="#E8833A"/>
+  </g>
+</svg>
