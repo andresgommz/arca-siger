@@ -1,6 +1,6 @@
 # Marca ARCA
 
-El ícono es una "A" con forma de refugio y un punto naranja adentro: la persona bajo techo, a quien llega la ayuda. La palabra ARCA va en Inter ExtraBold, convertida en trazos (los SVG no necesitan la fuente instalada).
+El ícono es una "A" con forma de refugio y un punto naranja adentro: la persona bajo techo, a quien llega la ayuda. La palabra ARCA va en Inter ExtraBold y el lema en Inter Medium, convertidos en trazos (los SVG no necesitan la fuente instalada).
 
 ## Archivos
 
@@ -8,6 +8,8 @@ El ícono es una "A" con forma de refugio y un punto naranja adentro: la persona
 |---|---|
 | `logo-arca-azul.svg` / `.png` | Logo completo sobre fondos claros (documento, diapositivas blancas). |
 | `logo-arca-blanco.svg` / `.png` | Logo completo sobre fondos oscuros o azules. |
+| `logo-arca-vertical-azul.svg` / `.png` | Logo vertical con el lema "Cada ayuda, a quien la necesita", sobre fondos claros: portada del documento, primera diapositiva. |
+| `logo-arca-vertical-blanco.svg` / `.png` | Logo vertical con el lema, sobre fondos oscuros o azules. |
 | `icono-arca-azul.svg` / `-512.png` | Solo el ícono, sobre fondos claros. |
 | `icono-arca-blanco.svg` / `-512.png` | Solo el ícono, sobre fondos oscuros. |
 | `icono-arca-fondo-azul.svg` / `-512.png` | Ícono sobre cuadrado azul redondeado: foto de perfil, favicon, portada. |
